@@ -25,18 +25,11 @@ jib {
     from {
         image = "eclipse-temurin:17-jre-jammy"
     }
-
     to {
         image = "ghcr.io/kle6404/ci-playground"
-
-        // 🔑 EXPLICIT TAG CONTROL (no defaults, no surprises)
-        tags = [
-            project.findProperty("IMAGE_TAG"),
-            project.findProperty("IMAGE_BRANCH")
-        ].findAll { it }
     }
-
     container {
         mainClass = "example.App"
     }
 }
+
