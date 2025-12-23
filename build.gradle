@@ -1,75 +1,17 @@
-//
-//plugins {
-//    id 'java'
-//    id 'com.google.cloud.tools.jib' version '3.4.0'
-//}
-//
-//java {
-//    toolchain {
-//        languageVersion = JavaLanguageVersion.of(17)
-//    }
-//}
-//
-//repositories {
-//    mavenCentral()
-//}
-//
-//dependencies {
-//    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-//}
-//
-//test {
-//    useJUnitPlatform()
-//}
-//
-//jib {
-//    from {
-//        image = "eclipse-temurin:17-jre-jammy"
-//    }
-//    to {
-//        image = "ghcr.io/kle6404/ci-playground"
-////        tags = [project.findProperty('CI_TAG') ?: 'bootstrap']
-//    }
-//    container {
-//        mainClass = "example.App"
-//    }
-//}
-//a
-
-
 plugins {
     id 'java'
-    id 'com.google.cloud.tools.jib' version '3.4.4' // 2025 Recommended Version
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-}
-
-test {
-    useJUnitPlatform()
+    id 'com.google.cloud.tools.jib' version '3.4.0'
 }
 
 jib {
-    from {
-        image = "eclipse-temurin:17-jre-jammy"
-    }
     to {
-        // Keep only the base repository name here.
-        // CLI arguments (-Djib.to.image) will override this.
         image = "ghcr.io/kle6404/ci-playground"
-    }
-    container {
-        mainClass = "example.App"
+
+        // Jib will NOT push :latest if tags is explicitly set
+        tags = [
+                System.getenv("IMAGE_TAG"),
+                System.getenv("IMAGE_BRANCH")
+        ].findAll { it }
     }
 }
+
