@@ -28,7 +28,7 @@ jib {
     }
     to {
         image = "ghcr.io/kle6404/ci-playground"
-        tags = [System.getenv("IMAGE_TAG") ?: "dev"]
+        tags = [project.findProperty('CI_TAG') ?: 'bootstrap']
     }
     container {
         mainClass = "example.App"
