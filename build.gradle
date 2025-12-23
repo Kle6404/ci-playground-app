@@ -1,45 +1,6 @@
-//
-//plugins {
-//    id 'java'
-//    id 'com.google.cloud.tools.jib' version '3.4.0'
-//}
-//
-//java {
-//    toolchain {
-//        languageVersion = JavaLanguageVersion.of(17)
-//    }
-//}
-//
-//repositories {
-//    mavenCentral()
-//}
-//
-//dependencies {
-//    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-//}
-//
-//test {
-//    useJUnitPlatform()
-//}
-//
-//jib {
-//    from {
-//        image = "eclipse-temurin:17-jre-jammy"
-//    }
-//    to {
-//        image = "ghcr.io/kle6404/ci-playground"
-////        tags = [project.findProperty('CI_TAG') ?: 'bootstrap']
-//    }
-//    container {
-//        mainClass = "example.App"
-//    }
-//}
-//a
-
-
 plugins {
     id 'java'
-    id 'com.google.cloud.tools.jib' version '3.4.4' // 2025 Recommended Version
+    id 'com.google.cloud.tools.jib' version '3.4.4'
 }
 
 java {
@@ -64,11 +25,17 @@ jib {
     from {
         image = "eclipse-temurin:17-jre-jammy"
     }
+
     to {
-        // Keep only the base repository name here.
-        // CLI arguments (-Djib.to.image) will override this.
         image = "ghcr.io/kle6404/ci-playground"
+
+        // 🔑 EXPLICIT TAG CONTROL (no defaults, no surprises)
+        tags = [
+            project.findProperty("IMAGE_TAG"),
+            project.findProperty("IMAGE_BRANCH")
+        ].findAll { it }
     }
+
     container {
         mainClass = "example.App"
     }
