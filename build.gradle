@@ -15,15 +15,25 @@ plugins {
 //    }
 //}
 
+//jib {
+//    to {
+//        // Use a default value if the env var is missing to avoid "unspecified" tags
+//        def primaryTag = System.getenv("IMAGE_TAG") ?: "latest"
+//        image = "ghcr.io/kle6404/ci-playground:${primaryTag}"
+//
+//        // Additional tags (like branch name) go here
+//        tags = [
+//                System.getenv("IMAGE_BRANCH")
+//        ].findAll { it && it != primaryTag } // Filter out nulls and duplicates
+//    }
+//}
 jib {
     to {
-        // Use a default value if the env var is missing to avoid "unspecified" tags
-        def primaryTag = System.getenv("IMAGE_TAG") ?: "latest"
-        image = "ghcr.io/kle6404/ci-playground:${primaryTag}"
+        image = "ghcr.io/kle6404/ci-playground"
 
-        // Additional tags (like branch name) go here
         tags = [
+                System.getenv("IMAGE_TAG"),
                 System.getenv("IMAGE_BRANCH")
-        ].findAll { it && it != primaryTag } // Filter out nulls and duplicates
+        ].findAll { it }
     }
 }
