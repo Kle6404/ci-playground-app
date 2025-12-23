@@ -1,3 +1,4 @@
+
 plugins {
     id 'java'
     id 'com.google.cloud.tools.jib' version '3.4.0'
@@ -27,12 +28,9 @@ jib {
     }
     to {
         image = "ghcr.io/kle6404/ci-playground"
-        tags = ["bootstrap"]   // 👈 TEMPORARY, forces GHCR repo creation
+        tags = [System.getenv("IMAGE_TAG") ?: "dev"]
     }
     container {
         mainClass = "example.App"
-        labels = [
-            "org.opencontainers.image.source": "https://github.com/Kle6404/ci-playground"
-        ]
     }
 }
